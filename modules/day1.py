@@ -6,15 +6,17 @@ def get_sensor_data():
         data = [line for line in f]
     return data
 
-def depth_measurement_increase(sensor_inputs):
+def get_sensor_map(sensor_inputs):
     keys = []
-    increases = 0
-    decreases = 0
-    same = 0
     size_dataset = len(sensor_inputs)
-    for num in range(0, size_dataset):
+    for num in range(0, len(sensor_inputs)):
         keys.append(num)
     sensor_map = dict(zip(keys, sensor_inputs))
+    return sensor_map
+
+def depth_measurement_increase(sensor_inputs):
+    sensor_map = get_sensor_map(sensor_inputs)
+    increases = 0
 
     for key in sensor_map:
         if key == 0:
@@ -30,13 +32,9 @@ def depth_measurement_increase(sensor_inputs):
 
 
 def sum_depth_measurement_increase(sensor_inputs):
-    keys = []
+    sensor_map = get_sensor_map(sensor_inputs)
     increases = 0
-    size_dataset = len(sensor_inputs)
-    last_window = size_dataset-3
-    for num in range(0, len(sensor_inputs)):
-        keys.append(num)
-    sensor_map = dict(zip(keys, sensor_inputs))
+    last_window = len(sensor_inputs)-3
 
     for key in sensor_map:
         if key >= last_window:
