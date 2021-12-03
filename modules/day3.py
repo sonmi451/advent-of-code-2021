@@ -35,6 +35,73 @@ def power_consumption(diagnostic_report):
     power_consumption = gamma_rate * epsilon_rate
     return power_consumption
 
+def count_bits(report, bit_position):
+    zeros, ones = 0, 0
+    for line in report:
+        if line[bit_position] == '1':
+            ones += 1
+        else:
+            zeros += 1
+    return zeros, ones
+
+def most_common_value(report, bit_position):
+    zeros, ones = count_bits(report, bit_position)
+
+    new_report = []
+    if ones < zeros:
+        for line in report:
+            if line[bit_position] == '0':
+                new_report.append(line)
+
+    else:
+        for line in report:
+            if line[bit_position] == '1':
+                new_report.append(line)
+    return new_report
+
+def least_common_value(report, bit_position):
+    zeros, ones = count_bits(report, bit_position)
+
+    new_report = []
+    if ones < zeros:
+        for line in report:
+            if line[bit_position] == '1':
+                new_report.append(line)
+
+    else:
+        for line in report:
+            if line[bit_position] == '0':
+                new_report.append(line)
+    return new_report
+
+def get_oxygen_rating(diagnostic_report):
+    # print("Oxygen rating")
+    report = diagnostic_report
+    data_length = len(diagnostic_report[0])
+    for bit in range(0, data_length):
+        report = most_common_value(report, bit)
+        if len(report) == 1:
+            return int(report[0],2)
+
+def get_co2_rating(diagnostic_report):
+    # print("CO2 rating")
+    report = diagnostic_report
+    data_length = len(diagnostic_report[0])
+    for bit in range(0, data_length):
+        report = least_common_value(report, bit)
+        if len(report) == 1:
+            return int(report[0],2)
+
+def life_support_rating(diagnostic_report):
+    # oxygen raing
+    oxygen_rating = get_oxygen_rating(diagnostic_report)
+    co2_scrubber_rating = get_co2_rating(diagnostic_report)
+    print(oxygen_rating)
+    print(co2_scrubber_rating)
+    return oxygen_rating * co2_scrubber_rating
+
 data = get_power_data()
-product = power_consumption(data)
-print(">", product)
+power = power_consumption(data)
+life_support = life_support_rating(data)
+print(">", power)
+print(">", life_support)
