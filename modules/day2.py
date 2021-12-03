@@ -5,22 +5,44 @@ def get_course_data():
     course_data = read_datafile(filepath)
     return course_data
 
-def position_product(course_data):
-    pitch = 0
-    distance = 0
+def crude_position_product(course_data):
+    depth = 0
+    horizontal_position = 0
     for datum in course_data:
         vector = datum.split(' ')
         direction = vector[0]
-        size = vector[1]
+        size = int(vector[1])
 
         if direction == 'up':
-            pitch -= int(size)
+            depth -= size
         elif direction == 'down':
-            pitch += int(size)
+            depth += size
         elif direction == 'forward':
-            distance += int(size)
+            horizontal_position += size
 
-    product = pitch * distance
+    product = depth * horizontal_position
+    return product
+
+
+def position_product(course_data):
+    depth = 0
+    horizontal_position = 0
+    aim = 0
+    for datum in course_data:
+        vector = datum.split(' ')
+        direction = vector[0]
+        size = int(vector[1])
+
+        if direction == 'up':
+            aim -= size
+        elif direction == 'down':
+            aim += size
+        elif direction == 'forward':
+            horizontal_position += size
+            increase = aim*size
+            depth += increase
+
+    product = depth * horizontal_position
     return product
 
 data = get_course_data()
