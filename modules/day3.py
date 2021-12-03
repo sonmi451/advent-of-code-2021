@@ -74,30 +74,21 @@ def least_common_value(report, bit_position):
                 new_report.append(line)
     return new_report
 
-def get_oxygen_rating(diagnostic_report):
-    # print("Oxygen rating")
+def get_rating(diagnostic_report, type="oxygen"):
     report = diagnostic_report
     data_length = len(diagnostic_report[0])
     for bit in range(0, data_length):
-        report = most_common_value(report, bit)
+        if type == "oxygen":
+            report = most_common_value(report, bit)
+        elif type == "carbondioxide":
+            report = least_common_value(report, bit)
         if len(report) == 1:
             return int(report[0],2)
 
-def get_co2_rating(diagnostic_report):
-    # print("CO2 rating")
-    report = diagnostic_report
-    data_length = len(diagnostic_report[0])
-    for bit in range(0, data_length):
-        report = least_common_value(report, bit)
-        if len(report) == 1:
-            return int(report[0],2)
 
 def life_support_rating(diagnostic_report):
-    # oxygen raing
-    oxygen_rating = get_oxygen_rating(diagnostic_report)
-    co2_scrubber_rating = get_co2_rating(diagnostic_report)
-    print(oxygen_rating)
-    print(co2_scrubber_rating)
+    oxygen_rating = get_rating(diagnostic_report, "oxygen")
+    co2_scrubber_rating = get_rating(diagnostic_report, "carbondioxide")
     return oxygen_rating * co2_scrubber_rating
 
 data = get_power_data()
