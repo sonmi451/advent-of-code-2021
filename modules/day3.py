@@ -12,7 +12,7 @@ def power_consumption(diagnostic_report):
     # Count the bitrate
     counts = [0 for x in range(0, data_length)]
     for line in diagnostic_report:
-        data = [x for x in line.strip()]
+        data = [x for x in line]
 
         for bit in range(0, data_length):
             if data[bit] == '1':
