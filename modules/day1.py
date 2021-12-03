@@ -1,9 +1,10 @@
 # The first order of business is to figure out how quickly the depth increases, just so you know what you're dealing with - you never know if the keys will get carried into deeper water by an ocean current or a fish or something.
 #To do this, count the number of times a depth measurement increases from the previous measurement. (There is no measurement before the first measurement.) In the example above, the changes are as follows:
+from modules.read_datafile import read_datafile
 
 def get_sensor_data():
-    with open('./modules/day1_data.txt') as f:
-        data = [line for line in f]
+    filepath = './data/day1.txt'
+    data = read_datafile(filepath)
     return data
 
 def get_sensor_map(sensor_inputs):
