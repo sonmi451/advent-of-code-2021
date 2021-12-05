@@ -10,14 +10,35 @@ def get_scoreboards():
     scoreboards = read_scoreboards(filepath)
     return scoreboards
 
-def board_marker(scoreboards, bingo_callouts):
+def bingo_game(bingo_boards, bingo_callouts):
     for num in bingo_callouts:
-        for scoreboard in range(0, len(scoreboards)):
-            new_scoreboard = [x if x != num else 'x' for x in scoreboards[scoreboard]]
-            scoreboards[scoreboard] = new_scoreboard.copy()
-            if bingo(new_scoreboard):
-                return new_scoreboard, num
+        for board in range(0, len(bingo_boards)):
+            marked_board = [x if x != num else 'x' for x in bingo_boards[board]]
+            bingo_boards[board] = marked_board.copy()
+            if bingo(marked_board):
+                # print("bingo!")
+                return marked_board, num
     return False, num
+
+def last_available_board(bingo_boards, bingo_callouts):
+    num_scoreboards = len(bingo_boards)
+    bingo_tracker = 0
+    non_bingoed_boards = dict(zip(range(0,num_scoreboards),bingo_boards.copy()))
+    for num in bingo_callouts:
+        if len(non_bingoed_boards) == 1:
+            first = next(iter(non_bingoed_boards))
+            # print(non_bingoed_boards[first])
+            return non_bingoed_boards[first]
+        for board in range(0, num_scoreboards):
+            if bingo_boards[board]:
+                marked_board = [x if x != num else 'x' for x in bingo_boards[board]]
+                bingo_boards[board] = marked_board
+                if bingo(marked_board):
+                    # print("bingo!")
+                    bingo_tracker += 1
+                    bingo_boards[board] = False
+                    del non_bingoed_boards[board]
+    return False
 
 def bingo(scoreboard):
     regions_of_interest = [scoreboard[:5],
@@ -43,7 +64,20 @@ def score_calculator(scoreboard, final_call):
 
 scoreboards = get_scoreboards()
 bingo_callouts = get_bingo_numbers()
-winning_board, winning_num = board_marker(scoreboards, bingo_callouts)
+winning_board, winning_num = bingo_game(scoreboards, bingo_callouts)
+if winning_board:
+    score = score_calculator(winning_board, winning_num)
+
+    print(f"> {score}")
+
+else:
+    print("No winner found!")
+
+scoreboards = get_scoreboards()
+bingo_callouts = get_bingo_numbers()
+board = last_available_board(scoreboards, bingo_callouts)
+winning_board, winning_num = bingo_game([board], bingo_callouts)
+
 if winning_board:
     score = score_calculator(winning_board, winning_num)
 
