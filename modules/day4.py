@@ -16,26 +16,21 @@ def bingo_game(bingo_boards, bingo_callouts):
             marked_board = [x if x != num else 'x' for x in bingo_boards[board]]
             bingo_boards[board] = marked_board.copy()
             if bingo(marked_board):
-                # print("bingo!")
                 return marked_board, num
     return False, num
 
 def last_available_board(bingo_boards, bingo_callouts):
     num_scoreboards = len(bingo_boards)
-    bingo_tracker = 0
     non_bingoed_boards = dict(zip(range(0,num_scoreboards),bingo_boards.copy()))
     for num in bingo_callouts:
         if len(non_bingoed_boards) == 1:
             first = next(iter(non_bingoed_boards))
-            # print(non_bingoed_boards[first])
             return non_bingoed_boards[first]
         for board in range(0, num_scoreboards):
             if bingo_boards[board]:
                 marked_board = [x if x != num else 'x' for x in bingo_boards[board]]
                 bingo_boards[board] = marked_board
                 if bingo(marked_board):
-                    # print("bingo!")
-                    bingo_tracker += 1
                     bingo_boards[board] = False
                     del non_bingoed_boards[board]
     return False
