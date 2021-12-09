@@ -1,4 +1,4 @@
-from modules.day5 import graph_lines
+from modules.day5 import graph_lines, count_peaks
 
 
 def test_graph_lines():
@@ -14,9 +14,10 @@ def test_graph_lines():
         '0,0 -> 8,8',
         '5,5 -> 8,2'
     ]
-    test_output = [x for x in '0000000100001000010000100001000000000100011211121100000000000000000000000000000000000000002221110000']
-    output = graph_lines(input)
+    test_output = [int(x) for x in '0000000100001000010000100001000000000100011211121100000000000000000000000000000000000000002221110000']
+    output = graph_lines(input, 10)
     assert output == test_output
 
 def test_count_peaks():
-    pass
+    test_input = [int(x) for x in '0000000100001000010000100001000000000100011211121100000000000000000000000000000000000000002221110000']
+    assert count_peaks(test_input) == 5
