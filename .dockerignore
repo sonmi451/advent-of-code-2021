@@ -1,0 +1,57 @@
+####################################
+## Files to ignore for Docker image
+####################################
+
+## OS
+.ssh
+.bash_history
+.bash_profile
+.bash_logout
+.bashrc
+.DS_Store
+
+## Git
+.git
+.gitignore
+
+## CI
+./jenkins
+JENKINSFILE
+
+## Docker
+.docker
+Dockerfile
+docker-compose.*
+
+## Minikube
+kube/
+
+## Development resources
+dev_test_deploy_resources/
+*.pem
+
+## Terraform
+.terraform/
+terraform/
+*.tfstate
+*.tfstate.backup
+*.tfstate.lock.info
+*.tfvars
+
+## Python
+__pycache__/
+*/__pycache__/
+.cache/
+.Python
+
+## Virtual environment
+.env/
+.venv/
+venv/
+env/
+
+## Unit test / coverage reports
+htmlcov/
+.coverage
+.pytest*
+htmlcov/

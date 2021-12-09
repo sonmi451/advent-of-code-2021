@@ -1,0 +1,12 @@
+version: "3.4"
+
+services:
+
+  robot:
+    container_name: submarine
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      PYTHONUNBUFFERED: 1
