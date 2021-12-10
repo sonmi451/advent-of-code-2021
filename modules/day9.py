@@ -15,12 +15,23 @@ def find_low_points(sensor_map):
     for y in range(0,height):
 
         for x in range(0,length):
-            # print(f'Coords: {x, y}')
-            # print(f'Value: {sensor_map[y][x]}')
+            print(f'Coords: {x, y}')
+            print(f'Value: {sensor_map[y][x]}')
 
             # Horizontal
+            if x == 0:
+                edge, adjacent = int(sensor_map[y][x]),  int(sensor_map[y][x+1])
+                if edge < adjacent:
+                    sensor_map[y][x+1] = 9
+
+            if x == length:
+                edge, adjacent = int(sensor_map[y][x]),  int(sensor_map[y][x-1])
+                if edge < adjacent:
+                    sensor_map[y][x-1] = 9
+
             if x >= last_horizontal:
                 continue
+
             else:
                 point_a, point_b, point_c = int(sensor_map[y][x]),  int(sensor_map[y][x+1]), int(sensor_map[y][x+2])
                 if point_b < point_a and point_b < point_c:
@@ -28,13 +39,28 @@ def find_low_points(sensor_map):
                     sensor_map[y][x+2] = 9
 
             # Vertical
+            if y == 0:
+                edge, adjacent = int(sensor_map[y][x]),  int(sensor_map[y+1][x])
+                print(edge, adjacent)
+                if edge < adjacent:
+                    sensor_map[y+1][x] = 9
+
+            if y == height:
+                edge, adjacent = int(sensor_map[y][x]),  int(sensor_map[y-1][x])
+                if edge < adjacent:
+                    sensor_map[y-1][x] = 9
+
             if y >= last_vertical:
                 continue
+
             else:
                 col_a, col_b, col_c = int(sensor_map[y][x]),  int(sensor_map[y+1][x]), int(sensor_map[y+2][x])
                 if col_b < col_a and col_b < col_c:
                     sensor_map[y][x] = 9
                     sensor_map[y+2][x] = 9
+
+
+
 
 
     print('## NEW GRID')
