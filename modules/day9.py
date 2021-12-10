@@ -86,7 +86,7 @@ def find_low_points(sensor_map):
                 north = sensor_map[y-1][x]
                 south = sensor_map[y+1][x]
                 west = sensor_map[y][x-1]
-                if middle < north and middle < south and middle < east and middle < west:
+                if middle < north and middle < south and middle < west:
                     low_points.append(middle)
 
             # not edges
