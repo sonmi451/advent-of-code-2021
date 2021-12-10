@@ -1,82 +1,114 @@
-from read_datafile import read_sequence
+from read_datafile import read_datafile
+
+def get_map_data():
+    filepath = './data/day9.txt'
+    map_data = read_datafile(filepath)
+    sensor_map = []
+    for row in map_data:
+        sensor_map.append([int(x) for x in row])
+    return sensor_map
 
 def find_low_points(sensor_map):
     length = len(sensor_map[0])
     height = len(sensor_map)
-    last_horizontal = length-2
-    last_vertical = height-2
+    outer_coord_x = length-1
+    outer_coord_y = height-1
 
-    print('## GRID')
-    for y in sensor_map:
-        print(y)
-    print('#######')
-
-
+    low_points = []
     for y in range(0,height):
-
         for x in range(0,length):
-            print(f'Coords: {x, y}')
-            print(f'Value: {sensor_map[y][x]}')
+            middle = sensor_map[y][x]
+            # print(f'coords: {x, y} - value: {middle}')
 
-            # Horizontal
-            if x == 0:
-                edge, adjacent = int(sensor_map[y][x]),  int(sensor_map[y][x+1])
-                if edge < adjacent:
-                    sensor_map[y][x+1] = 9
+            # corners
+            # top left
+            if x == 0 and y == 0:
+                # print(f' > top left - {middle}')
+                point_a = sensor_map[y+1][x]
+                point_b = sensor_map[y][x+1]
+                if middle < point_a and middle < point_b:
+                    low_points.append(middle)
 
-            if x == length:
-                edge, adjacent = int(sensor_map[y][x]),  int(sensor_map[y][x-1])
-                if edge < adjacent:
-                    sensor_map[y][x-1] = 9
+            # top right
+            elif x == outer_coord_x and y == 0:
+                # print(f' > top right - {middle}')
+                point_a = sensor_map[y+1][x]
+                point_b = sensor_map[y][x-1]
+                if middle < point_a and middle < point_b:
+                    low_points.append(middle)
 
-            if x >= last_horizontal:
-                continue
+            # bottom left
+            elif x == 0 and y == outer_coord_y:
+                # print(f'> bottom left - {middle}')
+                point_a = sensor_map[y-1][x]
+                point_b = sensor_map[y][x+1]
+                if middle < point_a and middle < point_b:
+                    low_points.append(middle)
 
+            # bottom right
+            elif x == outer_coord_x and y == outer_coord_y:
+                # print(f'> bottom right - {middle}')
+                point_a = sensor_map[y-1][x]
+                point_b = sensor_map[y][x-1]
+                if middle < point_a and middle < point_b:
+                    low_points.append(middle)
+
+            # top horizontal edge
+            elif y == 0:
+                # print(f' > top row - {middle}')
+                south = sensor_map[y+1][x]
+                east = sensor_map[y][x+1]
+                west = sensor_map[y][x-1]
+                if middle < south and middle < east and middle < west:
+                    low_points.append(middle)
+
+            # bottom horizontal edge
+            elif y == outer_coord_y:
+                # print(f' > bottom row - {middle}')
+                north = sensor_map[y-1][x]
+                east = sensor_map[y][x+1]
+                west = sensor_map[y][x-1]
+                if middle < north and middle < east and middle < west:
+                    low_points.append(middle)
+
+            # left edge
+            elif x == 0:
+                # print(f' > left col - {middle}')
+                north = sensor_map[y-1][x]
+                south = sensor_map[y+1][x]
+                east = sensor_map[y][x+1]
+                if middle < north and middle < south and middle < east:
+                    low_points.append(middle)
+
+            # right edge
+            elif x == outer_coord_x:
+                # print(f' > right col - {middle}')
+                north = sensor_map[y-1][x]
+                south = sensor_map[y+1][x]
+                west = sensor_map[y][x-1]
+                if middle < north and middle < south and middle < east and middle < west:
+                    low_points.append(middle)
+
+            # not edges
             else:
-                point_a, point_b, point_c = int(sensor_map[y][x]),  int(sensor_map[y][x+1]), int(sensor_map[y][x+2])
-                if point_b < point_a and point_b < point_c:
-                    sensor_map[y][x] = 9
-                    sensor_map[y][x+2] = 9
-
-            # Vertical
-            if y == 0:
-                edge, adjacent = int(sensor_map[y][x]),  int(sensor_map[y+1][x])
-                print(edge, adjacent)
-                if edge < adjacent:
-                    sensor_map[y+1][x] = 9
-
-            if y == height:
-                edge, adjacent = int(sensor_map[y][x]),  int(sensor_map[y-1][x])
-                if edge < adjacent:
-                    sensor_map[y-1][x] = 9
-
-            if y >= last_vertical:
-                continue
-
-            else:
-                col_a, col_b, col_c = int(sensor_map[y][x]),  int(sensor_map[y+1][x]), int(sensor_map[y+2][x])
-                if col_b < col_a and col_b < col_c:
-                    sensor_map[y][x] = 9
-                    sensor_map[y+2][x] = 9
-
-
-
-
-
-    print('## NEW GRID')
-    flat_grid = []
-    for row in sensor_map:
-        print(row)
-        flat_grid = flat_grid + row
-    print('## OUTPUT')
-    output = [x for x in flat_grid if x != 9]
-    print(output)
-    print('###########')
-    return output
+                # print(f' > middle section - {middle}')
+                north = sensor_map[y-1][x]
+                south = sensor_map[y+1][x]
+                east = sensor_map[y][x+1]
+                west = sensor_map[y][x-1]
+                if middle < north and middle < south and middle < east and middle < west:
+                    low_points.append(middle)
+    return low_points
 
 
 def calculate_risk(input):
     risk = 0
     for x in input:
-        risk += 1+x
+        risk += (1+x)
     return risk
+
+sensor_map = get_map_data()
+low_points = find_low_points(sensor_map)
+print(low_points)
+risk = calculate_risk(low_points)
+print(risk)
