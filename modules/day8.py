@@ -1,3 +1,10 @@
+from read_datafile import read_datafile
+
+def get_input_data():
+    filepath = './data/day8.txt'
+    data = read_datafile(filepath)
+    return data
+
 def find_digit_patterns(input):
     decoded = []
     for line in input:
@@ -5,9 +12,6 @@ def find_digit_patterns(input):
         split = line.split(' | ')
         signal_patterns = [''.join(sorted(x)) for x in split[0].split(' ')]
         output_values = [''.join(sorted(x)) for x in split[1].split(' ')]
-
-        print(signal_patterns)
-        print(output_values)
 
         # decode based on string length
         for pattern in signal_patterns:
@@ -39,3 +43,8 @@ def count_digits(decoded, numbers_of_interest):
             if number in [1, 4, 7, 8]:
                 instances += 1
     return instances
+
+input = get_input_data()
+decoded_numbers = find_digit_patterns(input)
+num_digits = count_digits(decoded_numbers, [1, 4, 7, 8])
+print(num_digits)
