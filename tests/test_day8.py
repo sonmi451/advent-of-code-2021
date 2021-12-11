@@ -1,4 +1,4 @@
-from modules.day8 import find_digit_patterns, count_digits
+from modules.day8 import find_digit_patterns, count_digits, sum_all_outputs
 
 
 def test_find_digit_patterns():
@@ -15,5 +15,7 @@ def test_find_digit_patterns():
         'gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce'
     ]
     decoded_numbers = find_digit_patterns(input)
-    num_digits = count_digits(decoded_numbers, [1, 4, 7, 8])
-    assert num_digits == 26
+    # num_digits = count_digits(decoded_numbers, [1, 4, 7, 8])
+    # assert num_digits == 26
+    total = sum_all_outputs(decoded_numbers)
+    assert total == 61229

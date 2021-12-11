@@ -15,26 +15,30 @@ def find_digit_patterns(input):
 
         # decode based on string length
         for pattern in signal_patterns:
-            pattern_found = False
             crib[pattern] = '.'
             if len(pattern) == 2:
                 crib[pattern] = 1
-                pattern_found = True
             elif len(pattern) == 3:
                 crib[pattern] = 7
-                pattern_found = True
             elif len(pattern) == 4:
                 crib[pattern] = 4
-                pattern_found = True
             elif len(pattern) == 7:
                 crib[pattern] = 8
-                pattern_found = True
+
+        # decode based on string config
+            elif len(pattern) == 5:
+                crib[pattern] = 5 # or 9
+            elif len(pattern) == 6:
+                crib[pattern] = 0 # or 9 or 6
 
         # decode output
         crib['output'] = [crib[output_value] for output_value in output_values]
         decoded.append(crib)
     return decoded
 
+def sum_all_outputs(decoded_numbers):
+    outputs = [sum(crib['output']) for crib in decoded_numbers]
+    return sum(outputs)
 
 def count_digits(decoded, numbers_of_interest):
     instances = 0
@@ -44,7 +48,7 @@ def count_digits(decoded, numbers_of_interest):
                 instances += 1
     return instances
 
-input = get_input_data()
-decoded_numbers = find_digit_patterns(input)
-num_digits = count_digits(decoded_numbers, [1, 4, 7, 8])
-print(num_digits)
+# input = get_input_data()
+# decoded_numbers = find_digit_patterns(input)
+# num_digits = count_digits(decoded_numbers, [1, 4, 7, 8])
+# print(num_digits)
